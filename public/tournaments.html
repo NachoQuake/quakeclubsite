@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Torneos - QuakeChile - QuakeClub</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="icon" type="image/png" href="/images/favicon.png">
+    <style>
+        body {
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('/images/hero-bg.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+        
+        main {
+            padding-top: 7rem;
+            color: white;
+            text-align: center;
+        }
+        
+        .main-title {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        
+        .main-description {
+            font-size: 1.25rem;
+            margin-bottom: 3rem;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="container">
+                <div class="logo">
+                    <a href="/">
+                        <img src="/images/logo.png" alt="Quake Community Logo" id="logo-img">
+                        <span>QuakeChile - QuakeClub</span>
+                    </a>
+                </div>
+                <div class="nav-toggle">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+                <ul class="nav-menu">
+                    <li><a href="/">Inicio</a></li>
+                    <li><a href="/quake2">Quake 2</a></li>
+                    <li><a href="/quakelive">Quake Live</a></li>
+                    <li><a href="/rankings">Rankings</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <div class="container">
+            <h1 class="main-title">Torneos de Quake</h1>
+            <p class="main-description">Compite en torneos de Quake 2 y Quake Live organizados por nuestra comunidad</p>
+        </div>
+
+        <!-- Tournaments Filter Section -->
+        <section class="tournaments-filter">
+            <div class="container">
+                <div class="modern-filter-panel">
+                    <div class="filter-search">
+                        <div class="search-container">
+                            <i class="fas fa-search search-icon"></i>
+                            <input type="text" id="tournament-search" placeholder="Buscar torneos..." class="search-input">
+                        </div>
+                    </div>
+                    
+                    <div class="filter-options">
+                        <div class="filter-category">
+                            <h4 class="filter-title"><i class="fas fa-gamepad"></i> Juego</h4>
+                            <div class="filter-tags">
+                                <span class="filter-tag active" data-filter="game" data-value="all">Todos</span>
+                                <span class="filter-tag" data-filter="game" data-value="Quake 2">Quake 2</span>
+                                <span class="filter-tag" data-filter="game" data-value="Quake Live">Quake Live</span>
+                            </div>
+                        </div>
+                        
+                        <div class="filter-category">
+                            <h4 class="filter-title"><i class="fas fa-calendar-alt"></i> Estado</h4>
+                            <div class="filter-tags">
+                                <span class="filter-tag active" data-filter="status" data-value="all">Todos</span>
+                                <span class="filter-tag" data-filter="status" data-value="upcoming">Próximos</span>
+                                <span class="filter-tag" data-filter="status" data-value="in_progress">En Curso</span>
+                                <span class="filter-tag" data-filter="status" data-value="completed">Completados</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="active-filters" id="active-filters">
+                        <!-- Active filters will be shown here dynamically -->
+                    </div>
+                </div>
+                
+                <div class="create-tournament-container">
+                    <button id="create-tournament-button" class="btn-primary create-button">
+                        <i class="fas fa-plus-circle"></i> Crear Nuevo Torneo
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- All Tournaments Section -->
+        <section class="all-tournaments">
+            <div class="container">
+                <div id="all-tournaments" class="tournaments-container">
+                    <!-- Tournament cards will be loaded dynamically via JavaScript -->
+                    <div class="loading">Cargando torneos...</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Create Tournament Modal -->
+        <div id="create-tournament-modal" class="modal">
+            <div class="modal-content">
+                <span class="modal-close">&times;</span>
+                <h2>Crear Nuevo Torneo</h2>
+                <form id="tournament-create-form" class="tournament-form">
+                    <div class="form-group">
+                        <label for="name">Nombre del Torneo</label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="game">Juego</label>
+                        <select id="game" name="game" required>
+                            <option value="">Selecciona un juego</option>
+                            <option value="Quake 2">Quake 2</option>
+                            <option value="Quake Live">Quake Live</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="date">Fecha</label>
+                        <input type="date" id="date" name="date" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="description">Descripción</label>
+                        <textarea id="description" name="description" rows="4" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="maxParticipants">Número Máximo de Participantes</label>
+                        <input type="number" id="maxParticipants" name="maxParticipants" min="2" max="64" value="16" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="format">Formato del Torneo</label>
+                        <select id="format" name="format" required>
+                            <option value="">Selecciona un formato</option>
+                            <option value="single_elimination">Eliminación Simple</option>
+                            <option value="double_elimination">Eliminación Doble</option>
+                            <option value="round_robin">Round Robin</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Tipo de Participantes</label>
+                        <div class="radio-group">
+                            <label>
+                                <input type="radio" name="participantType" value="individual" checked> Jugadores Individuales
+                            </label>
+                            <label>
+                                <input type="radio" name="participantType" value="team"> Equipos
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-submit">
+                        <button type="submit" class="btn-primary">Crear Torneo</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <img src="/images/logo.png" alt="Quake Community Logo">
+                    <p>QuakeChile - QuakeClub</p>
+                </div>
+                <div class="footer-links">
+                    <h3>Enlaces Rápidos</h3>
+                    <ul>
+                    <li><a href="/">Inicio</a></li>
+                    <li><a href="/quake2">Quake 2</a></li>
+                    <li><a href="/quakelive">Quake Live</a></li>
+                    <li><a href="/rankings">Rankings</a></li>
+                    </ul>
+                </div>
+                <div class="footer-social">
+                    <h3>Síguenos</h3>
+                    <div class="social-icons">
+                        <a href="https://discord.gg/Vpx7zV6e" target="_blank"><i class="fab fa-discord"></i></a>
+                        <a href="https://www.twitch.tv/quakeclub" target="_blank"><i class="fab fa-twitch"></i></a>
+                        <a href="https://www.youtube.com/@QuakeClubCL" target="_blank"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 QuakeChile - QuakeClub. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="/js/main.js"></script>
+    <script src="/js/tournaments.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Initialize tournament creation modal
+            const createTournamentButton = document.getElementById('create-tournament-button');
+            const createTournamentModal = document.getElementById('create-tournament-modal');
+            const modalClose = document.querySelector('.modal-close');
+            
+            if (createTournamentButton && createTournamentModal) {
+                createTournamentButton.addEventListener('click', () => {
+                    createTournamentModal.style.display = 'flex';
+                });
+                
+                modalClose.addEventListener('click', () => {
+                    createTournamentModal.style.display = 'none';
+                });
+                
+                window.addEventListener('click', (e) => {
+                    if (e.target === createTournamentModal) {
+                        createTournamentModal.style.display = 'none';
+                    }
+                });
+            }
+            
+            // Modern filter functionality
+            const filterTags = document.querySelectorAll('.filter-tag');
+            const searchInput = document.getElementById('tournament-search');
+            
+            // Current filter state
+            const filterState = {
+                game: 'all',
+                status: 'all',
+                search: ''
+            };
+            
+            // Apply filters function
+            function applyFilters() {
+                const tournamentCards = document.querySelectorAll('.tournament-card');
+                
+                tournamentCards.forEach(card => {
+                    const gameMatch = filterState.game === 'all' || card.dataset.game === filterState.game;
+                    const statusMatch = filterState.status === 'all' || card.dataset.status === filterState.status;
+                    const searchText = card.textContent.toLowerCase();
+                    const searchMatch = filterState.search === '' || searchText.includes(filterState.search.toLowerCase());
+                    
+                    if (gameMatch && statusMatch && searchMatch) {
+                        card.style.display = 'block';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+                
+                // Update active filters display
+                updateActiveFilters();
+            }
+            
+            // Update active filters UI
+            function updateActiveFilters() {
+                const activeFiltersContainer = document.getElementById('active-filters');
+                activeFiltersContainer.innerHTML = '';
+                
+                if (filterState.game !== 'all') {
+                    const filterPill = document.createElement('span');
+                    filterPill.className = 'filter-pill';
+                    filterPill.innerHTML = `Juego: ${filterState.game} <i class="fas fa-times"></i>`;
+                    filterPill.dataset.filter = 'game';
+                    activeFiltersContainer.appendChild(filterPill);
+                }
+                
+                if (filterState.status !== 'all') {
+                    const filterPill = document.createElement('span');
+                    filterPill.className = 'filter-pill';
+                    filterPill.innerHTML = `Estado: ${filterState.status === 'upcoming' ? 'Próximos' : 
+                                           filterState.status === 'in_progress' ? 'En Curso' : 'Completados'} <i class="fas fa-times"></i>`;
+                    filterPill.dataset.filter = 'status';
+                    activeFiltersContainer.appendChild(filterPill);
+                }
+                
+                if (filterState.search !== '') {
+                    const filterPill = document.createElement('span');
+                    filterPill.className = 'filter-pill';
+                    filterPill.innerHTML = `Búsqueda: ${filterState.search} <i class="fas fa-times"></i>`;
+                    filterPill.dataset.filter = 'search';
+                    activeFiltersContainer.appendChild(filterPill);
+                }
+                
+                // Add event listeners to filter pills
+                document.querySelectorAll('.filter-pill').forEach(pill => {
+                    pill.querySelector('i').addEventListener('click', () => {
+                        const filterType = pill.dataset.filter;
+                        filterState[filterType] = filterType === 'game' || filterType === 'status' ? 'all' : '';
+                        
+                        // Update UI to reflect changes
+                        if (filterType === 'game' || filterType === 'status') {
+                            document.querySelectorAll(`.filter-tag[data-filter="${filterType}"]`).forEach(tag => {
+                                tag.classList.remove('active');
+                                if (tag.dataset.value === 'all') {
+                                    tag.classList.add('active');
+                                }
+                            });
+                        } else if (filterType === 'search') {
+                            searchInput.value = '';
+                        }
+                        
+                        applyFilters();
+                    });
+                });
+            }
+            
+            // Add event listeners to filter tags
+            filterTags.forEach(tag => {
+                tag.addEventListener('click', () => {
+                    const filterType = tag.dataset.filter;
+                    const filterValue = tag.dataset.value;
+                    
+                    // Update active class on tags
+                    document.querySelectorAll(`.filter-tag[data-filter="${filterType}"]`).forEach(t => {
+                        t.classList.remove('active');
+                    });
+                    tag.classList.add('active');
+                    
+                    // Update filter state
+                    filterState[filterType] = filterValue;
+                    
+                    // Apply filters
+                    applyFilters();
+                });
+            });
+            
+            // Add event listener to search input
+            if (searchInput) {
+                searchInput.addEventListener('input', () => {
+                    filterState.search = searchInput.value;
+                    applyFilters();
+                });
+            }
+        });
+    </script>
+</body>
+</html>

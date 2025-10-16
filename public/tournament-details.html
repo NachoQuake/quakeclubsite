@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalles del Torneo - QuakeChile - QuakeClub</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="icon" type="image/png" href="/images/favicon.png">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="container">
+                <div class="logo">
+                    <a href="/">
+                        <img src="/images/logo.png" alt="Quake Community Logo" id="logo-img">
+                        <span>QuakeChile - QuakeClub</span>
+                    </a>
+                </div>
+                <div class="nav-toggle">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+                <ul class="nav-menu">
+                    <li><a href="/">Inicio</a></li>
+                    <li><a href="/quake2">Quake 2</a></li>
+                    <li><a href="/quakelive">Quake Live</a></li>
+                    <li><a href="/rankings">Rankings</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Tournament Details Section -->
+        <section class="tournament-details">
+            <div class="container">
+                <div id="tournament-details-container">
+                    <!-- Tournament details will be loaded dynamically via JavaScript -->
+                    <div class="loading">Cargando detalles del torneo...</div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <img src="/images/logo.png" alt="Quake Community Logo">
+                    <p>QuakeChile - QuakeClub</p>
+                </div>
+                <div class="footer-links">
+                    <h3>Enlaces Rápidos</h3>
+                    <ul>
+                    <li><a href="/">Inicio</a></li>
+                    <li><a href="/quake2">Quake 2</a></li>
+                    <li><a href="/quakelive">Quake Live</a></li>
+                    <li><a href="/rankings">Rankings</a></li>
+                    </ul>
+                </div>
+                <div class="footer-social">
+                    <h3>Síguenos</h3>
+                    <div class="social-icons">
+                        <a href="https://discord.gg/Vpx7zV6e" target="_blank"><i class="fab fa-discord"></i></a>
+                        <a href="https://www.twitch.tv/quakeclub" target="_blank"><i class="fab fa-twitch"></i></a>
+                        <a href="https://www.youtube.com/@QuakeClubCL" target="_blank"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 QuakeChile - QuakeClub. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="/js/main.js"></script>
+    <script src="/js/tournaments.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Get tournament ID from URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const tournamentId = urlParams.get('id');
+            
+            if (!tournamentId) {
+                // Redirect to tournaments page if no ID is provided
+                window.location.href = '/tournaments';
+                return;
+            }
+            
+            // Set page title based on tournament ID
+            document.title = `Torneo #${tournamentId} - QuakeChile - QuakeClub`;
+            
+            // Load tournament details
+            const detailsContainer = document.getElementById('tournament-details-container');
+            if (detailsContainer) {
+                loadTournamentDetails(detailsContainer);
+            }
+        });
+    </script>
+</body>
+</html>
